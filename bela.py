@@ -1,3 +1,5 @@
+import datetime
+
 class Entry :
   def __init__(self, _id, time):
     self._id = _id
@@ -12,12 +14,15 @@ class Entry :
   def __hash__(self):
       return id(self._id)
 
+# Define distance between cameras in meters
+camera_distance = 300 
+
 ##############################
 # Read & Parse Data          #
 ##############################
 
-data_1 = open("C:/Users/Ping/Desktop/data_1.txt", "r").read()
-data_2 = open("C:/Users/Ping/Desktop/data_2.txt", "r").read()
+data_1 = open("C:/Users/Ping/Desktop/bela-final/data_1.txt", "r").read()
+data_2 = open("C:/Users/Ping/Desktop/bela-final/data_2.txt", "r").read()
 
 # list(set()) - filters out duplicate entries by converting a list 
 # into a set (which has unique entries) and then back into a list
@@ -49,5 +54,15 @@ for entry in entries_2:
 # then compare their times
 for entry in entries_2:
     index = entries_1.index(entry)
-    print("Found entry " + entry._id + " on index " + str(index))
     
+    # Parse time strings into datetime objects
+    entry_2_time = datetime.datetime.strptime(entry.time, '%Y-%m-%dT%H:%M:%S')
+    entry_1_time = datetime.datetime.strptime(entries_1[index].time, '%Y-%m-%dT%H:%M:%S')
+
+    # Calculate time difference and convert it to seconds
+    time_dif = (entry_2_time - entry_1_time).total_seconds()
+
+    # Calculate average velocity in m/s and convert it to km/h
+    avg_velocity = (camera_distance / time_dif) * 3.6
+
+    print("Required time to pass from Camera A to Camera B for vehicle " + entry._id + " is ~" + str(time_dif) + " sec with average speed of " + str(avg_velocity) + " km/h")
