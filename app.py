@@ -1,5 +1,6 @@
 import datetime
 
+# An Entry class to help with organisation and transformations
 class Entry :
   def __init__(self, _id, time):
     self._id = _id
@@ -21,11 +22,13 @@ camera_distance = 300
 # Read & Parse Data          #
 ##############################
 
-data_1 = open("C:/Users/Ping/Desktop/bela-final/data_1.txt", "r").read()
-data_2 = open("C:/Users/Ping/Desktop/bela-final/data_2.txt", "r").read()
+data_1 = open("./data_1.txt", "r").read()
+data_2 = open("./data_2.txt", "r").read()
 
 # list(set()) - filters out duplicate entries by converting a list 
 # into a set (which has unique entries) and then back into a list
+# Parse data by lines (\n) to get an array and then by semi-colons (;) 
+# to get a 2D array, then map it into an Entry class object
 entries_1 = list(set(map(
   lambda e: Entry(e[0], e[1]), map(
     lambda r: r.split(';'), data_1.split('\n')
